@@ -107,8 +107,9 @@ def plot9(images):
     fig, ax1 = plt.subplots(3, 3)
     fig.set_facecolor('g')
     for i, img in enumerate(images):
+        res = sigmoid(img.reshape(-1, 5 * 5).dot(NN1))
         ax1[i % 3][int(np.floor(i/3))].axis('off')
-        ax1[i % 3][int(np.floor(i/3))].set_title(letter(np.argmax(sigmoid(img.reshape(-1, 5 * 5).dot(NN1)))))
+        ax1[i % 3][int(np.floor(i/3))].set_title(str(letter(np.argmax(res))) + ': conf ' + str(round(np.max(softmax(res.reshape(3,-1))),2)))
         ax1[i % 3][int(np.floor(i/3))].imshow(img, cmap='gray')
     plt.show()
 
