@@ -3,6 +3,8 @@ import requests, gzip, os, hashlib
 from Dataset import *
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+
 
 
 
@@ -113,7 +115,6 @@ def plot9(images):
         ax1[i % 3][int(np.floor(i/3))].imshow(img, cmap='gray')
     plt.show()
 
-
 epochs = 10000
 lr = 0.001
 batch = 9
@@ -144,3 +145,10 @@ for i in range(epochs):
 
 
 plot9(x)
+
+predictions = np.asarray([letter(np.argmax(sigmoid(img.reshape(-1, 5 * 5).dot(NN1)))) for img in dataset.images])
+labels = np.asarray([letter(img.target) for img in dataset.images])
+
+disp = ConfusionMatrixDisplay.from_predictions(labels,predictions)
+disp.ax_.set_title('Confusion Matrix')
+disp.plot()
